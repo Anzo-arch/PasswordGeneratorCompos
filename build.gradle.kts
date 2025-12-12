@@ -1,23 +1,26 @@
 plugins {
-    kotlin("jvm") version "1.8.22"                      // Plugin Kotlin JVM
-    id("org.jetbrains.compose") version "1.5.10"        // Plugin Compose para desktop
-    application                                         // Plugin para empacotar app executável
+    kotlin("jvm") version "1.9.0"
+    id("org.jetbrains.compose") version "1.5.1"
 }
 
 repositories {
-    google()                                            // Repositório Google (Android, Compose)
-    mavenCentral()                                      // Maven Central para libs Kotlin
-    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")  // Repo Compose dev
+    google()
+    mavenCentral()
 }
 
 dependencies {
-    implementation(compose.desktop.currentOs)          // Dependência principal Compose Desktop
+    implementation(compose.desktop.currentOs)
 }
 
-application {
-    mainClass.set("MainKt")                             // Classe principal gerada pelo Kotlin (fun main)
-}
-
-kotlin {
-    jvmToolchain(17)                                    // Usa JDK 17 para compilar
+compose.desktop {
+    application {
+        mainClass = "MainKt"
+        nativeDistributions {
+            targetFormats(org.jetbrains.compose.desktop.application.dsl.TargetFormat.Dmg,
+                          org.jetbrains.compose.desktop.application.dsl.TargetFormat.Msi,
+                          org.jetbrains.compose.desktop.application.dsl.TargetFormat.Deb)
+            packageName = "PasswordGenerator"
+            packageVersion = "1.0.0"
+        }
+    }
 }
